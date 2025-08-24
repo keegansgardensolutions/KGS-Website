@@ -1,1 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keegan's Garden Solutions - Professional Garden Maintenance Sheffield</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .hero-bg {
+            background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+        
+        /* Animated Background Elements */
+        .floating-leaf {
+            position: absolute;
+            opacity: 0.6;
+            animation: float 20s infinite linear;
+            z-index: 1;
+        }
+        .floating-leaf:nth-child(1) { animation-delay: 0s; left: 10%; }
+        .floating-leaf:nth-child(2) { animation-delay: -5s; left: 30%; }
+        .floating-leaf:nth-child(3) { animation-delay: -10s; left: 60%; }
+        .floating-leaf:nth-child(4) { animation-delay: -15s; left: 80%; }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .garden-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: sparkle 8s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .wave-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+            animation: wave 15s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateX(0px); }
+            50% { transform: translateX(20px); }
+        }
+        
+        .service-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-color: #16a34a;
+        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #16a34a;
+            border-radius: 1px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px 0 rgba(22, 163, 74, 0.3);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+            box-shadow: 0 6px 20px 0 rgba(22, 163, 74, 0.4);
+            transform: translateY(-2px);
+        }
+        .feature-icon {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border: 2px solid #a7f3d0;
+        }
+        .section-title {
+            background: linear-gradient(135deg, #166534 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .contact-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .contact-link:hover {
+            transform: translateX(4px);
+        }
+        .postcode-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        .postcode-card:hover {
+            border-color: #16a34a;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-xl sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center py-5">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center shadow-lg relative overflow-hidden">
+                        <!-- Garden elements background -->
+                        <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 48 48" fill="white">
+                            <path d="M12 20c0-4 3-8 8-8s8 4 8 8c0 2-1 4-2 5l-6 6-6-6c-1-1-2-3-2-5z"/>
+                            <circle cx="35" cy="15" r="3"/>
+                            <path d="M8 35c2-2 4-3 6-2s3 3 2 5-3 3-5 2-3-3-3-5z"/>
+                        </svg>
+                        <!-- KGS Letters -->
+                        <div class="relative z-10 text-white font-bold text-sm tracking-tight">KGS</div>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">Keegan's Garden Solutions</h1>
+                        <p class="text-xs text-gray-500 font-medium">Professional Garden Care</p>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <!-- Desktop menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button onclick="showPage('home')" class="nav-link text-gray-700 hover:text-green-600 font-medium py-2">Home</button>
+                    <button onclick="showPage('services')" class="nav-link text-gray-700 hover:text-green-600 font-medium py-2">Services</button>
+                    <button onclick="showPage('about')" class="nav-link text-gray-700 hover:text-green-600 font-medium py-2">About</button>
+                    <button onclick="showPage('contact')" class="nav-link text-gray-700 hover:text-green-600 font-medium py-2">Contact</button>
+                    <button onclick="showPage('contact')" class="btn-primary text-white px-6 py-2.5 rounded-xl font-semibold">Get Quote</button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="md:hidden hidden pb-6 border-t border-gray-100 mt-4 pt-4">
+                <div class="space-y-2">
+                    <button onclick="showPage('home')" class="block w-full text-left py-3 px-4 text-gray-700 hover:bg-gray-50 hover:text-green-600 font-medium rounded-lg transition-colors">Home</button>
+                    <button onclick="showPage('services')" class="block w-full text-left py-3 px-4 text-gray-700 hover:bg-gray-50 hover:text-green-600 font-medium rounded-lg transition-colors">Services</button>
+                    <button onclick="showPage('about')" class="block w-full text-left py-3 px-4 text-gray-700 hover:bg-gray-50 hover:text-green-600 font-medium rounded-lg transition-colors">About</button>
+                    <button onclick="showPage('contact')" class="block w-full text-left py-3 px-4 text-gray-700 hover:bg-gray-50 hover:text-green-600 font-medium rounded-lg transition-colors">Contact</button>
+                    <button onclick="showPage('contact')" class="btn-primary text-white px-6 py-3 rounded-xl font-semibold w-full mt-4">Get Quote</button>
+                </div>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero-bg text-white py-24 md:py-32 relative overflow-hidden">
+            <!-- Animated Background Elements -->
+            <div class="floating-leaf">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="rgba(255,255,255,0.3)">
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+                </svg>
+            </div>
+            <div class="floating-leaf">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)">
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+                </svg>
+            </div>
+            <div class="floating-leaf">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="rgba(255,255,255,0.2)">
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+                </svg>
+            </div>
+            <div class="floating-leaf">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(255,255,255,0.35)">
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+                </svg>
+            </div>
+            
+            <!-- Sparkling particles -->
+            <div class="garden-particle" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+            <div class="garden-particle" style="top: 40%; left: 25%; animation-delay: 2s;"></div>
+            <div class="garden-particle" style="top: 60%; left: 70%; animation-delay: 4s;"></div>
+            <div class="garden-particle" style="top: 30%; left: 80%; animation-delay: 6s;"></div>
+            <div class="garden-particle" style="top: 70%; left: 40%; animation-delay: 1s;"></div>
+            <div class="garden-particle" style="top: 50%; left: 90%; animation-delay: 3s;"></div>
+            <div class="garden-particle" style="top: 80%; left: 20%; animation-delay: 5s;"></div>
+            <div class="garden-particle" style="top: 10%; left: 60%; animation-delay: 7s;"></div>
+            
+            <!-- Wave effect -->
+            <div class="wave-bg"></div>
+            
+            <div class="max-w-7xl mx-auto px-6 text-center relative z-10">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-5xl md:text-7xl font-bold mb-8 leading-tight">Transform Your <span class="text-green-200">Garden</span></h2>
+                    <p class="text-xl md:text-2xl mb-12 opacity-90 leading-relaxed max-w-3xl mx-auto">Professional garden maintenance services across Sheffield. From essential care to luxury experiences, we make your outdoor space beautiful.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button onclick="showPage('contact')" class="bg-white text-green-800 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:-translate-y-1">Get Free Quote</button>
+                        <button onclick="showPage('services')" class="border-2 border-white text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-green-800 transition-all duration-300">View Services</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decorative elements -->
+            <div class="absolute top-20 left-10 w-20 h-20 bg-green-500 rounded-full opacity-20 animate-pulse"></div>
+            <div class="absolute bottom-20 right-10 w-32 h-32 bg-green-400 rounded-full opacity-10 animate-pulse" style="animation-delay: 1s;"></div>
+            <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-green-300 rounded-full opacity-15 animate-pulse" style="animation-delay: 2s;"></div>
+        </section>
+
+        <!-- Features -->
+        <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h3 class="section-title text-4xl md:text-5xl font-bold mb-6">Why Choose KGS?</h3>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">We're not just another garden service. We're your partners in creating and maintaining the outdoor space you've always dreamed of.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-card text-center p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-gray-900">Expert Service</h4>
+                        <p class="text-gray-600 leading-relaxed">Years of professional experience across Sheffield, with deep knowledge of local plants, soil, and seasonal care requirements.</p>
+                    </div>
+                    <div class="glass-card text-center p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-gray-900">Eco-Friendly</h4>
+                        <p class="text-gray-600 leading-relaxed">Sustainable practices and organic solutions that protect your family, pets, and the environment while keeping your garden thriving.</p>
+                    </div>
+                    <div class="glass-card text-center p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                        <div class="feature-icon w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-10 h-10 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-4 text-gray-900">Satisfaction Guaranteed</h4>
+                        <p class="text-gray-600 leading-relaxed">100% satisfaction guarantee on all our work. If you're not completely happy, we'll make it right at no extra cost.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Services Page -->
+    <div id="services" class="page">
+        <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Our Service Packages</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">Choose the perfect garden maintenance package for your needs. From essential care to luxury experiences, we have options for every garden and budget.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                    <!-- Essential Care -->
+                    <div class="service-card glass-card rounded-3xl p-8 relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">Essential Care</h3>
+                        <div class="text-3xl font-bold text-green-700 mb-6">Starting from £90<span class="text-lg text-gray-500 font-normal">/visit</span></div>
+                        <div class="text-sm text-gray-500 mb-4 italic">*Prices may vary based on garden size and requirements</div>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Perfect for smaller gardens or simple upkeep: lawn mowing, hedge trimming, and general tidying.</p>
+                        <ul class="text-gray-700 space-y-3 mb-8">
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Lawn mowing</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Hedge trimming</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>General tidying</li>
+                        </ul>
+                        <button onclick="showPage('contact')" class="btn-primary w-full text-white py-4 rounded-2xl font-bold text-lg">
+                            Get Quote
+                        </button>
+                    </div>
+                    
+                    <!-- Complete Care - Most Popular -->
+                    <div class="service-card glass-card rounded-3xl p-8 relative border-2 border-green-500 shadow-2xl scale-105">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                            ⭐ Most Popular
+                        </div>
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg mt-2">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">Complete Care</h3>
+                        <div class="text-3xl font-bold text-green-700 mb-6">Starting from £145<span class="text-lg text-gray-500 font-normal">/visit</span></div>
+                        <div class="text-sm text-gray-500 mb-4 italic">*Prices may vary based on garden size and requirements</div>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Everything in Essential Care PLUS full hedge shaping, weed control, seasonal pruning, and garden waste removal.</p>
+                        <ul class="text-gray-700 space-y-3 mb-6">
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Full hedge shaping</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Weed control</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Seasonal pruning</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Garden waste removal</li>
+                        </ul>
+                        <div class="bg-green-50 border border-green-200 rounded-2xl p-4 mb-8">
+                            <p class="text-green-800 font-semibold text-center">The perfect balance of value and complete garden maintenance</p>
+                        </div>
+                        <button onclick="showPage('contact')" class="btn-primary w-full text-white py-4 rounded-2xl font-bold text-lg">
+                            Get Quote
+                        </button>
+                    </div>
+                    
+                    <!-- Luxury Garden Experience -->
+                    <div class="service-card glass-card rounded-3xl p-8 relative">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4 text-gray-900">Luxury Garden Experience</h3>
+                        <div class="text-3xl font-bold text-green-700 mb-6">Starting from £225<span class="text-lg text-gray-500 font-normal">/visit</span></div>
+                        <div class="text-sm text-gray-500 mb-4 italic">*Prices may vary based on garden size and requirements</div>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Full-service care for your entire garden: tree trimming, fertilisation, flower bed redesign, priority scheduling, and more. Only for those who want a truly flawless garden.</p>
+                        <ul class="text-gray-700 space-y-3 mb-8">
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Tree trimming</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Fertilisation program</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Flower bed redesign</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Priority scheduling</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-3"></span>Seasonal consultations</li>
+                        </ul>
+                        <button onclick="showPage('contact')" class="btn-primary w-full text-white py-4 rounded-2xl font-bold text-lg">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Why Complete Care -->
+                <div class="bg-green-50 rounded-lg p-8 text-center">
+                    <div class="text-3xl mb-4">💡</div>
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Why Complete Care is the sweet spot:</h3>
+                    <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+                        You get a beautifully maintained garden, hassle-free, at the best value. Many of our clients start here and never look back!
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">About KGS</h2>
+                    <div class="flex items-center justify-center space-x-2 mb-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <p class="text-xl text-gray-600 font-semibold">Based in Sheffield — local and proud</p>
+                    </div>
+                </div>
+                
+                <div class="glass-card rounded-3xl p-10 mb-12 text-center shadow-xl">
+                    <p class="text-xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
+                        At KGS, we believe your garden should be a place to relax, not a chore on your to-do list. That's why we provide reliable, professional, and affordable garden maintenance designed to keep your outdoor space looking its best all year round.
+                    </p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-12">
+                    <div class="glass-card rounded-3xl p-8 shadow-xl">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h2m-2 0v-6m2 0V7a2 2 0 012-2h2a2 2 0 012 2v6a2 2 0 01-2 2h-2m-2 0v6"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-6 text-gray-900">What We Do</h4>
+                        <ul class="text-gray-700 space-y-4">
+                            <li class="flex items-start"><span class="w-2 h-2 bg-green-500 rounded-full mr-4 mt-2 flex-shrink-0"></span>Regular garden maintenance tailored to your specific needs and preferences</li>
+                            <li class="flex items-start"><span class="w-2 h-2 bg-green-500 rounded-full mr-4 mt-2 flex-shrink-0"></span>Professional lawn cutting, hedge trimming, and seasonal pruning</li>
+                            <li class="flex items-start"><span class="w-2 h-2 bg-green-500 rounded-full mr-4 mt-2 flex-shrink-0"></span>Comprehensive weed control and garden waste removal</li>
+                            <li class="flex items-start"><span class="w-2 h-2 bg-green-500 rounded-full mr-4 mt-2 flex-shrink-0"></span>Year-round seasonal care to keep your garden healthy and thriving</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-card rounded-3xl p-8 shadow-xl">
+                        <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="text-2xl font-bold mb-6 text-gray-900">Why Choose KGS</h4>
+                        <ul class="text-gray-700 space-y-4">
+                            <li class="flex items-start"><span class="text-green-500 mr-4 mt-1 flex-shrink-0">✓</span>Clear, simple package options starting from £90 per visit</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-4 mt-1 flex-shrink-0">✓</span>Friendly, professional service you can rely on every time</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-4 mt-1 flex-shrink-0">✓</span>Meticulous attention to detail — we treat your garden like our own</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-4 mt-1 flex-shrink-0">✓</span>Flexible scheduling designed to fit around your busy lifestyle</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="glass-card rounded-3xl p-10 shadow-xl">
+                    <div class="text-center mb-10">
+                        <h4 class="text-3xl font-bold mb-4 text-gray-900">Service Areas</h4>
+                        <p class="text-xl text-gray-700">We proudly serve Sheffield and surrounding areas</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S2</div>
+                            <div class="text-gray-700 font-medium">Heeley, Arbourthorne, Norfolk Park</div>
+                        </div>
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S7</div>
+                            <div class="text-gray-700 font-medium">Nether Edge, Carter Knowle, Millhouses</div>
+                        </div>
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S8</div>
+                            <div class="text-gray-700 font-medium">Woodseats, Beauchief, Greenhill</div>
+                        </div>
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S11</div>
+                            <div class="text-gray-700 font-medium">Ecclesall, Greystones, Endcliffe</div>
+                        </div>
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S12</div>
+                            <div class="text-gray-700 font-medium">Gleadless, Intake</div>
+                        </div>
+                        <div class="postcode-card rounded-2xl p-6 text-center shadow-lg">
+                            <div class="text-2xl font-bold text-green-700 mb-2">S14</div>
+                            <div class="text-gray-700 font-medium">Gleadless Valley, Herdings, Lowedges</div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                            Whether you need a quick tidy-up or ongoing full garden care, KGS is here to make it easy.
+                        </p>
+                        <div class="flex items-center justify-center space-x-2 mb-6">
+                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <p class="text-gray-700 text-lg">Get in touch today to book your first visit</p>
+                        </div>
+                        <button onclick="showPage('contact')" class="btn-primary text-white px-10 py-4 rounded-2xl font-bold text-lg">
+                            Contact Us Today
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <section class="py-20 bg-gradient-to-b from-white to-gray-50">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="section-title text-4xl md:text-5xl font-bold mb-6">Get In Touch</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Ready to transform your garden? Contact us today for a free consultation and personalized quote.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <!-- Contact Info -->
+                    <div class="glass-card rounded-3xl p-10 shadow-xl">
+                        <h3 class="text-3xl font-bold mb-8 text-gray-900">Contact Information</h3>
+                        
+                        <div class="space-y-8">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg mb-1">Phone</div>
+                                    <a href="tel:07754567040" class="contact-link text-green-600 hover:text-green-700 text-lg font-semibold">07754567040</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg mb-1">Email</div>
+                                    <a href="mailto:keegansgardensolutions@gmail.com" class="contact-link text-green-600 hover:text-green-700 font-semibold break-all">keegansgardensolutions@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg mb-1">Service Areas</div>
+                                    <div class="text-gray-700">Sheffield: S2, S7, S8, S11, S12, S14<br>and surrounding areas</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-gray-900 text-lg mb-1">Hours</div>
+                                    <div class="text-gray-700">Monday - Friday: 9AM-6PM<br>Weekends: Closed</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10 p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl border border-green-200">
+                            <h4 class="font-bold text-gray-900 mb-3 text-lg">Free Consultation</h4>
+                            <p class="text-gray-700 leading-relaxed">Call today for a free on-site consultation and personalized quote for your garden project!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="glass-card rounded-3xl p-10 shadow-xl">
+                        <h3 class="text-3xl font-bold mb-8 text-gray-900">Request a Quote</h3>
+                        <form id="contact-form" class="space-y-6">
+                            <div>
+                                <label class="block text-gray-900 font-semibold mb-3 text-lg">Name *</label>
+                                <input type="text" name="name" required class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-lg">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-900 font-semibold mb-3 text-lg">Email *</label>
+                                <input type="email" name="email" required class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-lg">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-900 font-semibold mb-3 text-lg">Phone</label>
+                                <input type="tel" name="phone" class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-lg">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-900 font-semibold mb-3 text-lg">Service Package</label>
+                                <select name="service" class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-lg bg-white">
+                                    <option>Select a package...</option>
+                                    <option>Essential Care (Starting from £90/visit)</option>
+                                    <option>Complete Care (Starting from £145/visit)</option>
+                                    <option>Luxury Garden Experience (Starting from £225/visit)</option>
+                                    <option>One-off garden tidy</option>
+                                    <option>Other/Custom requirements</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-900 font-semibold mb-3 text-lg">Project Details</label>
+                                <textarea name="details" rows="5" class="w-full px-6 py-4 border-2 border-gray-200 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-300 text-lg resize-none" placeholder="Tell us about your garden project..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary w-full text-white py-4 rounded-2xl font-bold text-lg">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-green-700 via-green-600 to-green-700 text-white py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <!-- Company Info -->
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold">Keegan's Garden Solutions</h3>
+                    </div>
+                    <p class="text-green-50 text-lg leading-relaxed mb-6">Transforming outdoor spaces across Sheffield with professional care, attention to detail, and a passion for beautiful gardens.</p>
+                    <div class="text-green-100">
+                        <p class="font-semibold">Licensed & Insured</p>
+                        <p>Serving Sheffield & Surrounding Areas</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-xl font-bold mb-6">Quick Links</h4>
+                    <div class="space-y-3">
+                        <button onclick="showPage('home')" class="block text-green-50 hover:text-white transition-colors text-left">Home</button>
+                        <button onclick="showPage('services')" class="block text-green-50 hover:text-white transition-colors text-left">Our Services</button>
+                        <button onclick="showPage('about')" class="block text-green-50 hover:text-white transition-colors text-left">About KGS</button>
+                        <button onclick="showPage('contact')" class="block text-green-50 hover:text-white transition-colors text-left">Contact Us</button>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-xl font-bold mb-6">Get In Touch</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <a href="tel:07754567040" class="text-green-50 hover:text-white transition-colors">07754567040</a>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="w-5 h-5 text-green-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <a href="mailto:keegansgardensolutions@gmail.com" class="text-green-50 hover:text-white transition-colors text-sm">keegansgardensolutions@gmail.com</a>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="w-5 h-5 text-green-200 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="text-green-50">
+                                <p>Monday - Friday</p>
+                                <p>9AM - 6PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Bar -->
+            <div class="border-t border-green-500 pt-8 text-center">
+                <p class="text-green-100">&copy; 2025 Keegan's Garden Solutions. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Close mobile menu
+            document.getElementById('mobile-menu').classList.add('hidden');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const phone = formData.get('phone');
+            const service = formData.get('service');
+            const details = formData.get('details');
+            
+            // Create email content
+            const subject = `Garden Service Inquiry from ${name}`;
+            const body = `Hello Keegan's Garden Solutions,
+
+I would like to request a quote for your garden services.
+
+Contact Details:
+Name: ${name}
+Email: ${email}
+Phone: ${phone || 'Not provided'}
+
+Service Interest: ${service}
+
+Project Details:
+${details || 'No additional details provided'}
+
+Please contact me to discuss my garden maintenance needs.
+
+Thank you!`;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:keegansgardensolutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show confirmation
+            alert('Your email client will open with your message ready to send. If it doesn\'t open automatically, please call 07754567040 directly.');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973dbf74a430cdc1',t:'MTc1NTk4NTAxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
